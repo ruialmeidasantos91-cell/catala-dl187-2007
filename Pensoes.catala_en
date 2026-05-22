@@ -1,0 +1,92 @@
+> Module Pensoes
+
+# Article 19. Guarantee period
+
+The guarantee period for the award of an old-age pension is 15 civil
+years, consecutive or interpolated, with a record of remuneration,
+under the terms of article 12.
+
+```catala
+declaration scope GuaranteePeriod:
+  input years_with_remuneration content integer
+  output meets_guarantee_period content boolean
+
+scope GuaranteePeriod:
+  definition meets_guarantee_period equals
+    years_with_remuneration >= 15
+```
+
+# Article 20. Normal age of access to old-age pension
+# (original wording, DL 187/2007, before 2014 amendments)
+
+The recognition of the right to an old-age pension further depends on
+the beneficiary being aged 65 or over, without prejudice to the
+following special anticipation regimes and measures.
+
+```catala
+declaration scope NormalAgeAccess:
+  input age content integer
+  output meets_age_condition content boolean
+
+scope NormalAgeAccess:
+  definition meets_age_condition equals
+    age >= 65
+```
+
+# Article 10, paragraph 1. Common conditions for old-age pension
+# (partial -- guarantee period and age only)
+
+The recognition of the right to old-age pensions depends on the
+fulfilment of the guarantee period and on the submission of a request.
+
+```catala
+declaration scope OldAgePensionEligibility:
+  input age content integer
+  input years_with_remuneration content integer
+  guarantee_period scope GuaranteePeriod
+  normal_age scope NormalAgeAccess
+  output is_eligible content boolean
+
+scope OldAgePensionEligibility:
+  definition guarantee_period.years_with_remuneration equals
+    years_with_remuneration
+  definition normal_age.age equals
+    age
+  definition is_eligible equals
+    guarantee_period.meets_guarantee_period
+    and normal_age.meets_age_condition
+```
+
+# Tests
+
+```catala
+declaration scope TestCase1:
+  output result content OldAgePensionEligibility
+
+scope TestCase1:
+  definition result equals
+    output of OldAgePensionEligibility with {
+      -- age: 68
+      -- years_with_remuneration: 35
+    }
+
+declaration scope TestCase2:
+  output result content OldAgePensionEligibility
+
+scope TestCase2:
+  definition result equals
+    output of OldAgePensionEligibility with {
+      -- age: 50
+      -- years_with_remuneration: 20
+    }
+
+declaration scope TestCase3:
+  output result content OldAgePensionEligibility
+
+scope TestCase3:
+  definition result equals
+    output of OldAgePensionEligibility with {
+      -- age: 65
+      -- years_with_remuneration: 15
+    }
+```
