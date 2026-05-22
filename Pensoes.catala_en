@@ -1,5 +1,20 @@
 > Module Pensoes
 
+# Formal Specification (First-Order Logic)
+#
+# Domain: B — set of beneficiaries
+# Variables: age(b) ∈ ℕ, years(b) ∈ ℕ, for b ∈ B
+#
+# GP(b) ↔ years(b) ≥ 15                         [Art. 19]
+# NA(b) ↔ age(b) ≥ 65                            [Art. 20, original 2007]
+# E(b)  ↔ GP(b) ∧ NA(b)                          [Art. 10(1), partial]
+#
+# Expanded:
+# E(b) ↔ years(b) ≥ 15 ∧ age(b) ≥ 65
+#
+# Scope: DL 187/2007, original wording, before 2014 amendments.
+# Excludes: anticipation regimes (Art. 20 a-d), Art. 12 density rules.
+
 # Article 19. Guarantee period
 
 The guarantee period for the award of an old-age pension is 15 civil
