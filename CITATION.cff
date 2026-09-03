@@ -1,0 +1,33 @@
+cff-version: 1.2.0
+title: >-
+  Formal Verification of Old-Age Pension Eligibility
+  (Decreto-Lei n.º 187/2007)
+message: >-
+  If you use this software or the formalization it contains,
+  please cite it using these metadata.
+type: software
+authors:
+  - given-names: Rui
+    family-names: Almeida Santos
+    email: ruialmeidasantos91@gmail.com
+repository-code: >-
+  https://github.com/ruialmeidasantos91-cell/catala-dl187-2007
+abstract: >-
+  A faithful-by-construction formalization of the old-age pension
+  eligibility rules of the Portuguese General Social Security Regime
+  (Decreto-Lei n.º 187/2007, original 2007 wording), specified in
+  First-Order Logic, implemented in Catala, and machine-verified in
+  Lean 4 by an adequacy theorem relating the executable definition to
+  the logical specification. Part of doctoral research on formal
+  verification of old-age and invalidity pensions within the Rules as
+  Code paradigm.
+keywords:
+  - rules as code
+  - formal verification
+  - legal informatics
+  - Catala
+  - Lean 4
+  - first-order logic
+  - social security law
+  - Portugal
+license: CC-BY-4.0

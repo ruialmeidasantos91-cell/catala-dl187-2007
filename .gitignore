@@ -1,2 +1,21 @@
+# Catala / Clerk
 _build
+_target
 _targets
+*.tmp
+
+# Lean / Lake
+lean/.lake/
+lean/build/
+
+# Python
+__pycache__/
+*.py[cod]
+.hypothesis/
+.venv/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,26 @@
+{
+  "_comment": "Golden test vectors shared by every stage of the pipeline. Catala test scopes, the Lean examples and tools/check_vectors.py must all agree with this file. A divergence is a pipeline failure, not a rounding difference.",
+  "legal_scope": {
+    "diploma": "Decreto-Lei n.º 187/2007, de 10 de Maio",
+    "wording": "original 2007, before the 2014 amendments",
+    "articles": ["10(1) partial", "19", "20"]
+  },
+  "cases": [
+    { "id": "case1", "age": 68, "years": 35, "eligible": true,
+      "rationale": "Art. 19 met (35 >= 15); Art. 20 met (68 >= 65)." },
+    { "id": "case2", "age": 50, "years": 20, "eligible": false,
+      "deciding_article": "20",
+      "rationale": "Art. 19 met (20 >= 15); Art. 20 not met (50 < 65)." },
+    { "id": "case3", "age": 65, "years": 15, "eligible": true,
+      "rationale": "Both thresholds met exactly; inclusive per decision D1." },
+    { "id": "case4", "age": 64, "years": 40, "eligible": false,
+      "deciding_article": "20",
+      "rationale": "One year short of the normal age, however long the record." },
+    { "id": "case5", "age": 70, "years": 14, "eligible": false,
+      "deciding_article": "19",
+      "rationale": "One year short of the guarantee period, at any age." },
+    { "id": "case6", "age": 30, "years": 5, "eligible": false,
+      "deciding_article": "19 and 20",
+      "rationale": "Both thresholds missed." }
+  ]
+}

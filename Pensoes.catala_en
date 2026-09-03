@@ -84,6 +84,7 @@ scope TestCase1:
       -- age: 68
       -- years_with_remuneration: 35
     }
+  assertion result.is_eligible
 
 declaration scope TestCase2:
   output result content OldAgePensionEligibility
@@ -94,6 +95,7 @@ scope TestCase2:
       -- age: 50
       -- years_with_remuneration: 20
     }
+  assertion not result.is_eligible
 
 declaration scope TestCase3:
   output result content OldAgePensionEligibility
@@ -104,4 +106,43 @@ scope TestCase3:
       -- age: 65
       -- years_with_remuneration: 15
     }
+  assertion result.is_eligible
+```
+
+# Boundary cases. These mirror tests/vectors.json and the Lean examples in
+# lean/DL187/Eligibility.lean; the three implementations must agree.
+
+```catala
+declaration scope TestCase4:
+  output result content OldAgePensionEligibility
+
+scope TestCase4:
+  definition result equals
+    output of OldAgePensionEligibility with {
+      -- age: 64
+      -- years_with_remuneration: 40
+    }
+  assertion not result.is_eligible
+
+declaration scope TestCase5:
+  output result content OldAgePensionEligibility
+
+scope TestCase5:
+  definition result equals
+    output of OldAgePensionEligibility with {
+      -- age: 70
+      -- years_with_remuneration: 14
+    }
+  assertion not result.is_eligible
+
+declaration scope TestCase6:
+  output result content OldAgePensionEligibility
+
+scope TestCase6:
+  definition result equals
+    output of OldAgePensionEligibility with {
+      -- age: 30
+      -- years_with_remuneration: 5
+    }
+  assertion not result.is_eligible
 ```

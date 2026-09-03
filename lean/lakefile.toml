@@ -1,0 +1,6 @@
+name = "DL187"
+version = "0.1.0"
+defaultTargets = ["DL187"]
+
+[[lean_lib]]
+name = "DL187"
