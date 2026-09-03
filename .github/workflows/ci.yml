@@ -66,7 +66,47 @@ jobs:
         working-directory: lean
         run: |
           lake update
-          lake build
+          set +e
+          lake build 2>&1 | tee build.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          if [ "$rc" -ne 0 ]; then
+            # Surface Lean's errors as GitHub annotations. Annotations are
+            # readable without signing in; raw job logs are not, which made an
+            # earlier failure needlessly hard to diagnose.
+            grep -E 'error' build.log | head -40 | while IFS= read -r line; do
+              echo "::error::$line"
+            done
+            exit 1
+          fi
+
+      # Compiling is not the same as proving. A theorem closed with `sorry`
+      # compiles perfectly and proves nothing, so the axiom footprint of every
+      # theorem is checked explicitly: anything depending on sorryAx fails the
+      # build. Only propext, Classical.choice and Quot.sound are acceptable.
+      - name: Verify the proofs are closed
+        working-directory: lean
+        run: |
+          cat > axioms.lean <<'EOF'
+          import DL187.Eligibility
+          open DL187
+          #print axioms meetsGuaranteePeriod_iff
+          #print axioms meetsAgeCondition_iff
+          #print axioms isEligible_iff_spec
+          #print axioms isEligible_iff
+          #print axioms isEligible_total
+          #print axioms isEligible_deterministic
+          #print axioms isEligible_mono
+          #print axioms age_threshold_sharp
+          #print axioms years_threshold_sharp
+          EOF
+          lake env lean axioms.lean | tee axioms.txt
+          if grep -q 'sorryAx' axioms.txt; then
+            echo "::error::a theorem depends on sorryAx — it is not proved"
+            exit 1
+          fi
+          echo "No theorem depends on sorryAx."
+          rm -f axioms.lean axioms.txt
 
   catala:
     name: Catala implementation

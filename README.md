@@ -72,7 +72,8 @@ reason is recorded in [`docs/INTERPRETATION.md`](docs/INTERPRETATION.md).
 Pensoes.catala_en           Catala implementation, with the FOL header and the statute text
 lean/
   lakefile.toml             Lake package
-  lean-toolchain            pinned Lean version
+  lean-toolchain            pinned Lean version (4.33.1)
+  DL187.lean                library root — imports every module
   DL187/Eligibility.lean    FOL specification, implementation, and the adequacy proof
 tests/
   vectors.json              golden cases, shared by every stage
