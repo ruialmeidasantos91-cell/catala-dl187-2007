@@ -25,7 +25,16 @@ jobs:
         with:
           python-version: "3.11"
       - name: Check golden vectors
-        run: python3 tools/check_vectors.py
+        run: |
+          python3 tools/check_vectors.py | tee vectors.txt
+          {
+            echo "## Decision layer — deferido / indeferido with the deciding article"
+            echo
+            echo '```'
+            cat vectors.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          rm -f vectors.txt
 
   lean:
     name: Lean 4 proofs
@@ -106,6 +115,15 @@ jobs:
             exit 1
           fi
           echo "No theorem depends on sorryAx."
+          {
+            echo "## Lean 4 — axiom footprint of every theorem"
+            echo
+            echo "\`sorryAx\` would mean a proof was left open. It appears nowhere below."
+            echo
+            echo '```'
+            cat axioms.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
           rm -f axioms.lean axioms.txt
 
   catala:
@@ -129,19 +147,47 @@ jobs:
       # Every scope carries assertions, so a scope that runs without error has
       # also checked its expected outcome. The scope names mirror
       # tests/vectors.json case ids.
+      # The output of each scope is copied into the run summary, which is
+      # readable on the run page without signing in to GitHub. Raw job logs
+      # are not, and a pipeline nobody can see working is a pipeline nobody
+      # has reason to believe.
       - name: Run test scopes
         run: |
           status=0
+          {
+            echo "## Catala — what the law computes"
+            echo
+            echo "\`Pensoes.catala_en\`, Decreto-Lei n.º 187/2007, original 2007 wording."
+            echo
+            echo "| Case | age | years | Catala output |"
+            echo "|---|---|---|---|"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          i=0
           for s in TestCase1 TestCase2 TestCase3 TestCase4 TestCase5 TestCase6; do
+            i=$((i+1))
+            age=$(python3 -c "import json;print(json.load(open('tests/vectors.json'))['cases'][$i-1]['age'])")
+            yrs=$(python3 -c "import json;print(json.load(open('tests/vectors.json'))['cases'][$i-1]['years'])")
             echo "::group::$s"
-            if opam exec -- clerk run Pensoes.catala_en --scope="$s"; then
-              echo "PASS $s"
+            if out=$(opam exec -- clerk run Pensoes.catala_en --scope="$s" 2>&1); then
+              printf '%s\n' "$out"
+              flat=$(printf '%s' "$out" | tr '\n' ' ' | tr -s ' ' | cut -c1-200)
+              echo "| $s | $age | $yrs | \`$flat\` |" >> "$GITHUB_STEP_SUMMARY"
+              echo "::notice title=$s::$flat"
             else
-              echo "::error::clerk run --scope=$s failed"
+              printf '%s\n' "$out"
+              echo "::error title=$s::clerk run failed"
+              echo "| $s | $age | $yrs | **FAILED** |" >> "$GITHUB_STEP_SUMMARY"
               status=1
             fi
             echo "::endgroup::"
           done
+
+          {
+            echo
+            echo "Every scope carries an assertion, so a scope that runs without error"
+            echo "has also checked its expected outcome against tests/vectors.json."
+          } >> "$GITHUB_STEP_SUMMARY"
           exit $status
 
   consistency:
