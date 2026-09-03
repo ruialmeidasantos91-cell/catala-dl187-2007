@@ -1,5 +1,6 @@
 # Formal Verification of Old-Age Pension Eligibility (DL 187/2007)
 
+[![pipeline](https://github.com/ruialmeidasantos91-cell/catala-dl187-2007/actions/workflows/ci.yml/badge.svg)](https://github.com/ruialmeidasantos91-cell/catala-dl187-2007/actions/workflows/ci.yml)
 ![Status](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow)
 ![Scope](https://img.shields.io/badge/Scope-Art.%2010(1)%2C%2019%2C%2020-lightgrey)
 ![License](https://img.shields.io/badge/License-CC%20BY%204.0-green)
@@ -92,6 +93,15 @@ run_pipeline.sh             end-to-end check
 ```
 
 Stages whose toolchain is missing are reported as `SKIP`, not as success.
+
+> **Where the pipeline actually runs end to end.** A development machine
+> commonly has only part of the toolchain — Catala installs through `opam`,
+> Lean through `elan`, and on Windows these end up on opposite sides of the
+> WSL boundary. Locally you will therefore see `SKIP` for whichever half is
+> missing. The GitHub Actions workflow is the reference environment: it is the
+> only place where the Catala scopes and the Lean proofs are checked against
+> the same golden vectors in a single run, and the badge above reflects that
+> run, not a local one.
 
 Individual steps:
 

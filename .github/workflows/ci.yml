@@ -1,0 +1,107 @@
+name: pipeline
+
+# Runs the full verification pipeline in one place.
+#
+# The developer environment splits the toolchain across two operating systems
+# (Catala inside WSL, Lean on Windows), so no local machine can run every
+# stage in a single pass. This workflow is that single place: it is the only
+# environment where the Catala implementation and the Lean proofs are checked
+# against the same golden vectors in the same run.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  python:
+    name: Python transcription vs. golden vectors
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Check golden vectors
+        run: python3 tools/check_vectors.py
+
+  lean:
+    name: Lean 4 proofs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # An unclosed proof voids every theorem downstream of it. This must fail
+      # the build, not appear as a warning somewhere in the log.
+      - name: Reject 'sorry' and 'axiom'
+        run: |
+          if grep -rnE '\bsorry\b|^[[:space:]]*axiom\b' --include='*.lean' lean/; then
+            echo "::error::lean/ contains 'sorry' or 'axiom' — proofs are not closed"
+            exit 1
+          fi
+          echo "No 'sorry' or 'axiom' found."
+
+      - uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: "lean"
+          build: true
+          test: false
+
+  catala:
+    name: Catala implementation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ocaml/setup-ocaml@v3
+        with:
+          ocaml-compiler: "5.2"
+
+      - name: Install Catala
+        run: opam install -y catala
+
+      - name: Record toolchain version
+        run: |
+          opam exec -- catala --version
+          opam exec -- clerk --version || true
+
+      # Every scope carries assertions, so a scope that runs without error has
+      # also checked its expected outcome. The scope names mirror
+      # tests/vectors.json case ids.
+      - name: Run test scopes
+        run: |
+          status=0
+          for s in TestCase1 TestCase2 TestCase3 TestCase4 TestCase5 TestCase6; do
+            echo "::group::$s"
+            if opam exec -- clerk run Pensoes.catala_en --scope="$s"; then
+              echo "PASS $s"
+            else
+              echo "::error::clerk run --scope=$s failed"
+              status=1
+            fi
+            echo "::endgroup::"
+          done
+          exit $status
+
+  consistency:
+    name: Golden vectors are consistent across stages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The three implementations are only comparable if they are tested on the
+      # same cases. This guards against a case being added to one stage and
+      # silently forgotten in the others.
+      - name: Case counts must match
+        run: |
+          vectors=$(python3 -c "import json;print(len(json.load(open('tests/vectors.json'))['cases']))")
+          catala=$(grep -c 'declaration scope TestCase' Pensoes.catala_en)
+          lean=$(grep -c '^example : isEligible' lean/DL187/Eligibility.lean)
+          echo "vectors.json: $vectors | Catala scopes: $catala | Lean examples: $lean"
+          if [ "$vectors" != "$catala" ] || [ "$vectors" != "$lean" ]; then
+            echo "::error::stage case counts diverge — a case was added in one stage only"
+            exit 1
+          fi
+          echo "All three stages cover the same $vectors cases."
