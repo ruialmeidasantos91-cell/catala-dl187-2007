@@ -1,4 +1,7 @@
 /-
+  SPDX-FileCopyrightText: 2026 Rui Almeida Santos
+  SPDX-License-Identifier: Apache-2.0
+
   DL 187/2007 — Old-Age Pension Eligibility
   Formal verification of Art. 10(1), 19, 20 (original 2007 wording)
 

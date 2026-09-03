@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rui Almeida Santos
+# SPDX-License-Identifier: Apache-2.0
 """Independent Python transcription of the FOL specification, checked against
 the golden vectors in tests/vectors.json.
 

@@ -1,0 +1,25 @@
+Formal Verification of Old-Age Pension Eligibility (Decreto-Lei n.º 187/2007)
+
+Copyright (c) 2026 Rui Almeida Santos
+
+This product includes software developed as part of doctoral research on the
+formal verification of Portuguese old-age and invalidity pensions, within the
+Rules as Code paradigm.
+
+Licensing is split by the nature of the material:
+
+  - Source code (.lean, .py, .sh, .catala_en, workflow and build files)
+    is licensed under the Apache License, Version 2.0. See LICENSE.
+
+  - Documentation and the formalization text (README.md, docs/, CITATION.cff,
+    tests/vectors.json) are licensed under the Creative Commons Attribution
+    4.0 International licence (CC BY 4.0). See LICENSE-DOCS.
+
+Attribution requirement: any use, in whole or in part, must retain this
+notice and credit the author. If you use this work in academic writing,
+please cite it using the metadata in CITATION.cff.
+
+The statutory text of Decreto-Lei n.º 187/2007 quoted in this repository is
+Portuguese legislation and is not covered by the above licences. English
+renderings of that text are unofficial working translations by the author and
+have no legal value.

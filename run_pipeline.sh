@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Rui Almeida Santos
+# SPDX-License-Identifier: Apache-2.0
 # End-to-end check of the DL 187/2007 verification pipeline.
 #
 #   ./run_pipeline.sh              run every stage that has a toolchain
@@ -8,6 +10,21 @@
 
 set -uo pipefail
 cd "$(dirname "$0")"
+
+# Catala is installed through an opam switch, which is normally activated by
+# an interactive shell's profile. A non-interactive shell (`wsl bash x.sh`,
+# a CI step, cron) never sources it, and every Catala stage then reports
+# "toolchain not found" on a machine where Catala is perfectly well
+# installed. Activate the switch explicitly rather than trusting the
+# environment.
+if ! command -v clerk >/dev/null 2>&1 && command -v opam >/dev/null 2>&1; then
+  for sw in catala-env default; do
+    if opam switch list --short 2>/dev/null | grep -qx "$sw"; then
+      eval "$(opam env --switch="$sw" --set-switch 2>/dev/null)" || true
+      command -v clerk >/dev/null 2>&1 && break
+    fi
+  done
+fi
 
 DIAGNOSE=0
 [ "${1:-}" = "--diagnose" ] && DIAGNOSE=1

@@ -135,11 +135,29 @@ If you cite this repository, please use [`CITATION.cff`](CITATION.cff).
 | Wording | Original 2007, before the 2014 amendments |
 | Coverage | Partial — work in progress |
 
-## License
+## License and citation
 
-[Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
+Copyright © 2026 Rui Almeida Santos. Licensing is split by the nature of the
+material, because Creative Commons licences are not designed for software and
+do not address patents or source availability:
 
-> Creative Commons advises against CC licenses for software. The formalization
-> text and documentation sit comfortably under CC BY 4.0; the `.py`, `.sh` and
-> `.lean` files arguably want a software license (MIT or Apache-2.0) alongside
-> it. This is an open decision, not an oversight.
+| Material | Licence | File |
+|---|---|---|
+| Source code — `.lean`, `.py`, `.sh`, `.catala_en`, build and workflow files | [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0) | [`LICENSE`](LICENSE) |
+| Documentation and formalization text — `README.md`, `docs/`, `CITATION.cff`, `tests/vectors.json` | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) | [`LICENSE-DOCS`](LICENSE-DOCS) |
+
+Both licences require attribution. Apache-2.0 additionally requires that
+modified files carry a notice of the change, so a derivative cannot be
+presented as this work unaltered. See [`NOTICE`](NOTICE).
+
+**If you use this work, cite it.** Metadata is in
+[`CITATION.cff`](CITATION.cff). Released versions are archived with a DOI, and
+the DOI — not this repository URL — is the stable reference.
+
+### On the statutory text
+
+Decreto-Lei n.º 187/2007 is Portuguese legislation and is not covered by the
+licences above. The English renderings of the statutory text in this
+repository are unofficial working translations by the author, made to keep the
+formalization readable to an international audience. They have no legal value;
+the Portuguese original governs.
