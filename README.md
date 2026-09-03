@@ -70,7 +70,6 @@ reason is recorded in [`docs/INTERPRETATION.md`](docs/INTERPRETATION.md).
 
 ```
 Pensoes.catala_en           Catala implementation, with the FOL header and the statute text
-clerk.toml                  Catala build configuration
 lean/
   lakefile.toml             Lake package
   lean-toolchain            pinned Lean version

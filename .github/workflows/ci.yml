@@ -43,11 +43,30 @@ jobs:
           fi
           echo "No 'sorry' or 'axiom' found."
 
-      - uses: leanprover/lean-action@v1
-        with:
-          lake-package-directory: "lean"
-          build: true
-          test: false
+      # elan is installed directly rather than through leanprover/lean-action,
+      # which refuses to build a package that has no lake-manifest.json. This
+      # package has no dependencies, so no manifest is committed; `lake update`
+      # generates one on the fly.
+      - name: Install elan
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -o elan-init.sh
+          sh elan-init.sh -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+
+      # elan reads lean/lean-toolchain and installs exactly that version, so CI
+      # and the development machine prove the same theorems with the same Lean.
+      - name: Report toolchain
+        working-directory: lean
+        run: |
+          cat lean-toolchain
+          lean --version
+          lake --version
+
+      - name: Build proofs
+        working-directory: lean
+        run: |
+          lake update
+          lake build
 
   catala:
     name: Catala implementation
@@ -60,7 +79,7 @@ jobs:
           ocaml-compiler: "5.2"
 
       - name: Install Catala
-        run: opam install -y catala
+        run: opam install -y catala.1.2.1
 
       - name: Record toolchain version
         run: |
