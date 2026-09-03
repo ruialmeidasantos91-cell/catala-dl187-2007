@@ -6,6 +6,11 @@ message: >-
   If you use this software or the formalization it contains,
   please cite it using these metadata.
 type: software
+doi: 10.5281/zenodo.22275958
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.22275959
+    description: DOI of version 0.1.1
 version: 0.1.1
 date-released: "2026-09-03"
 authors:

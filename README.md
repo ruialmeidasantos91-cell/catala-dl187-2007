@@ -1,6 +1,7 @@
 # Formal Verification of Old-Age Pension Eligibility (DL 187/2007)
 
 [![pipeline](https://github.com/ruialmeidasantos91-cell/catala-dl187-2007/actions/workflows/ci.yml/badge.svg)](https://github.com/ruialmeidasantos91-cell/catala-dl187-2007/actions/workflows/ci.yml)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22275958.svg)](https://doi.org/10.5281/zenodo.22275958)
 ![Status](https://img.shields.io/badge/Status-Work%20in%20Progress-yellow)
 ![Scope](https://img.shields.io/badge/Scope-Art.%2010(1)%2C%2019%2C%2020-lightgrey)
 ![License](https://img.shields.io/badge/License-CC%20BY%204.0-green)
@@ -151,8 +152,11 @@ modified files carry a notice of the change, so a derivative cannot be
 presented as this work unaltered. See [`NOTICE`](NOTICE).
 
 **If you use this work, cite it.** Metadata is in
-[`CITATION.cff`](CITATION.cff). Released versions are archived with a DOI, and
-the DOI — not this repository URL — is the stable reference.
+[`CITATION.cff`](CITATION.cff). Released versions are archived on Zenodo, and
+the DOI — not this repository URL — is the stable reference:
+
+- **[10.5281/zenodo.22275958](https://doi.org/10.5281/zenodo.22275958)** — concept DOI, always resolves to the latest version. Cite this one.
+- [10.5281/zenodo.22275959](https://doi.org/10.5281/zenodo.22275959) — version 0.1.1 specifically.
 
 ### On the statutory text
 
