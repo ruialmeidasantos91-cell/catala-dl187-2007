@@ -6,7 +6,7 @@ message: >-
   If you use this software or the formalization it contains,
   please cite it using these metadata.
 type: software
-version: 0.1.0
+version: 0.1.1
 date-released: "2026-09-03"
 authors:
   - given-names: Rui
@@ -22,7 +22,8 @@ abstract: >-
   Lean 4 by an adequacy theorem relating the executable definition to
   the logical specification for every beneficiary. Part of doctoral
   research on formal verification of old-age and invalidity pensions
-  within the Rules as Code paradigm.
+  within the Rules as Code paradigm. Source code is licensed under
+  Apache-2.0; the documentation and formalization text under CC BY 4.0.
 keywords:
   - rules as code
   - formal verification
@@ -32,6 +33,4 @@ keywords:
   - first-order logic
   - social security law
   - Portugal
-license:
-  - Apache-2.0
-  - CC-BY-4.0
+license: Apache-2.0
